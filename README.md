@@ -2,6 +2,12 @@
 
 Before running make, ensure you have set your correct AWS_PROFILE!!
 
+Check you environment settings:
+
+```
+set | grep AWS
+```
+
 # Steps
 
 ## Build
@@ -43,6 +49,19 @@ To test the deployed prd functions:
 make invoke-prd
 ```
 
+## Remove DEV
+
+```
+export AWS_PROFILE=purple4
+make remove-dev
+```
+
+## Remove PRD
+
+```
+export AWS_PROFILE=yellow5
+make remove-prd
+```
 
 
 ## Background

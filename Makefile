@@ -18,9 +18,15 @@ invoke-prd:
 	sls invoke -f hello -s prd
 	sls invoke -f world -s prd
 
-clean: check_clean
+remove-dev: _check
+	sls remove -r ap-southeast-2 -s dev
+
+remove-prd: _check
+	sls remove -r ap-southeast-2 -s prd
+
+clean: _check
 	rm -rf ./bin
 
-check-clean:
+_check:
 	@echo "Are you sure? [y/N] " && read ans && [ $${ans:-N} == y ]
     
