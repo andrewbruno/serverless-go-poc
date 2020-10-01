@@ -1,32 +1,33 @@
-.PHONY: build clean deploy check_clean
+## STAGE is only used for naming convensions
+## e.g. To deploy with prd naming convention, use make STAGE=prd deploy
+##
+## Ensure you set the correct AWS environment security credetials first!
+##
+STAGE ?= local
+AWS_PROFILE ?= localstack
+
+env-echo:
+	@echo 'Stage is: ${STAGE}'
+	@echo 'AWS_PROFILE is: ${AWS_PROFILE}'
 
 build:
 	env GOOS=linux go build -ldflags="-s -w" -o bin/hello hello/main.go
 	env GOOS=linux go build -ldflags="-s -w" -o bin/world world/main.go
 
-deploy-dev: clean build
-	sls deploy -v -r ap-southeast-2 -s dev
+deploy: clean build
+	sls deploy -v -r ap-southeast-2 -s $(STAGE)
 
-invoke-dev:
-	sls invoke -f hello -s dev
-	sls invoke -f world -s dev
+invoke:
+	sls invoke -f hello -s $(STAGE)
+	sls invoke -f world -s $(STAGE)
 
-deploy-prd: clean build
-	sls deploy -v -r ap-southeast-2 -s prd
-
-invoke-prd:
-	sls invoke -f hello -s prd
-	sls invoke -f world -s prd
-
-remove-dev: _check
-	sls remove -r ap-southeast-2 -s dev
-
-remove-prd: _check
-	sls remove -r ap-southeast-2 -s prd
+remove: _check
+	sls remove -r ap-southeast-2 -s $(STAGE)
 
 clean: _check
-	rm -rf ./bin
+	rm -rf ./bin ./serverless
 
 _check:
 	@echo "Are you sure? [y/N] " && read ans && [ $${ans:-N} == y ]
-    
+
+.PHONY: env-echo build deploy invoke remove clean _check

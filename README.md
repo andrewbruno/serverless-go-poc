@@ -5,64 +5,52 @@ Before running make, ensure you have set your correct AWS_PROFILE!!
 Check you environment settings:
 
 ```
+export AWS_PROFILE=purple4
 set | grep AWS
 ```
 
 # Steps
+
+## Check ENV variables
+
+```
+make env-echo
+```
+
+Set your env variables, e.g.
+
+```
+export AWS_PROFILE=yellow5
+export STAGE=yellow
+```
 
 ## Build
 ```
 make build
 ```
 
-## Deploy DEV
+## Deploy
 
-To deploy, ensure you set your AWS profile to the environment you wish to deploy to:
-
-e.g. for dev:
-
-```
-export AWS_PROFILE=purple4
-make deploy-dev
-```
-
-## Deploy PRD
-
-e.g. for prd:
+To deploy, ensure you set your AWS profile to the environment you wish to deploy to. For example, for `yellow`
 
 ```
 export AWS_PROFILE=yellow5
-make deploy-prd
+make STAGE=yellow deploy
 ```
 
-## Test DEV
+## Test by invoking deployed function
 
-To test the deployed tst functions:
 ```
-make invoke-tst
-```
-
-## Test PRD
-
-To test the deployed prd functions:
-```
-make invoke-prd
+export AWS_PROFILE=ab-dev
+make STAGE=dev invoke
 ```
 
-## Remove DEV
+## Remove
 
 ```
 export AWS_PROFILE=purple4
-make remove-dev
+make STAGE=purple remove
 ```
-
-## Remove PRD
-
-```
-export AWS_PROFILE=yellow5
-make remove-prd
-```
-
 
 ## Background
 
